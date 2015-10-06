@@ -12,7 +12,7 @@
 #   Dmitriy Shalashov  http://github.com/skaurus
 #   Johan Dahlberg
 #   Andreas Kompanez
-#   Samuel Cyprian		http://github.com/samcyp
+#   Samuel Cyprian    http://github.com/samcyp
 # License: MIT
 # Based on: http://github.com/Guille/node.websocket.js
 
@@ -41,8 +41,8 @@ requiredHeaders = {
   'origin': /^(.+)$/
 }
 handshakeTemplate75 = [
-  'HTTP/1.1 101 Web Socket Protocol Handshake', 
-  'Upgrade: WebSocket', 
+  'HTTP/1.1 101 Web Socket Protocol Handshake',
+  'Upgrade: WebSocket',
   'Connection: Upgrade',
   'WebSocket-Origin: {origin}',
   'WebSocket-Location: {protocol}://{host}{resource}',
@@ -62,9 +62,9 @@ flashPolicy = '<cross-domain-policy><allow-access-from domain="*" to-ports="*" /
 
 
 exports.createSecureServer = (websocketListener, credentials, options) ->
-	if !options then options = {}
-	options.secure = credentials
-	@createServer websocketListener, options
+  if !options then options = {}
+  options.secure = credentials
+  @createServer websocketListener, options
 
 exports.createServer = (websocketListener, options) ->
   if !options then options = {}
@@ -73,11 +73,11 @@ exports.createServer = (websocketListener, options) ->
   if !options.secure then options.secure = null
 
   net.createServer (socket) ->
-  	#Secure WebSockets
-  	wsProtocol = 'ws'
-  	if options.secure
-  	  wsProtocol = 'wss'
-  	  socket.setSecure options.secure
+    #Secure WebSockets
+    wsProtocol = 'ws'
+    if options.secure
+      wsProtocol = 'wss'
+      socket.setSecure options.secure
     socket.setTimeout 0
     socket.setNoDelay true
     socket.setKeepAlive true, 0
@@ -85,13 +85,13 @@ exports.createServer = (websocketListener, options) ->
     emitter = new process.EventEmitter()
     handshaked = false
     buffer = ""
-      
+
     handle = (data) ->
       buffer += data
-      
+
       chunks = buffer.split "\ufffd"
       count = chunks.length - 1 # last is "" or a partial packet
-        
+
       for i in [0...count]
         chunk = chunks[i]
         if chunk[0] == "\u0000"
@@ -99,13 +99,13 @@ exports.createServer = (websocketListener, options) ->
         else
           socket.end()
           return
-      
+
       buffer = chunks[count]
 
     handshake = (data) ->
       _headers = data.split "\r\n"
 
-      if /<policy-file-request.*>/.exec _headers[0] 
+      if /<policy-file-request.*>/.exec _headers[0]
         socket.write options.flashPolicy
         socket.end()
         return
@@ -160,7 +160,7 @@ exports.createServer = (websocketListener, options) ->
         hash = crypto.createHash "md5"
         key1 = pack parseInt numkey1/spaces1
         key2 = pack parseInt numkey2/spaces2
-        
+
         hash.update key1
         hash.update key2
         hash.update upgradeHead
@@ -200,23 +200,19 @@ exports.createServer = (websocketListener, options) ->
       else
         throw exception
     )
-
     emitter.remoteAddress = socket.remoteAddress
-    
     emitter.write = (data) ->
       try
         socket.write '\u0000', 'binary'
         socket.write data, 'utf8'
         socket.write '\uffff', 'binary'
       catch e
-        # Socket not open for writing, 
+        # Socket not open for writing,
         # should get "close" event just before.
         socket.end()
-    
+
     emitter.end = ->
       socket.end()
-    
+
     # emits: "connect", "data", "close", provides: write(data), end()
     websocketListener emitter
-
-
