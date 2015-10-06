@@ -813,15 +813,15 @@ RhinoListener.prototype.log = function (str) {
 };
 RhinoListener.prototype.passed = function (str) {
     //print message in green
-    print('\033[32m' + str.toString() + '\033[0m');
+    print('\0x1B[32m' + str.toString() + '\0x1B[0m');
 }
 RhinoListener.prototype.invalid = function (str) {
     //print message in yellow
-    print('\033[33m' + str.toString() + '\033[0m');
+    print('\0x1B[33m' + str.toString() + '\0x1B[0m');
 }
 RhinoListener.prototype.failure = function (str) {
     //print message in red
-    print('\033[31m' + str.toString() + '\033[0m');
+    print('\0x1B[31m' + str.toString() + '\0x1B[0m');
 }
 
 // some starter generators and support utilities.

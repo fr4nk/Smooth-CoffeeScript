@@ -215,11 +215,11 @@ class NodeListener extends prelude.qc.ConsoleListener
   constructor: (@maxCollected = 10) ->
   log: (str) -> show str
   passed: (str) -> # print message in green
-    console.log if useColors then "\033[32m#{str}\033[0m" else str
+    console.log if useColors then "\0x1B[32m#{str}\0x1B[0m" else str
   invalid: (str) -> # print message in yellow
-    console.warn if useColors then "\033[33m#{str}\033[0m" else str
+    console.warn if useColors then "\0x1B[33m#{str}\0x1B[0m" else str
   failure: (str) -> # print message in red
-    console.error if useColors then "\033[31m#{str}\033[0m" else str
+    console.error if useColors then "\0x1B[31m#{str}\0x1B[0m" else str
   done: ->
     show 'Completed test.'
     prelude.qc.resetProps() # Chain here if needed
