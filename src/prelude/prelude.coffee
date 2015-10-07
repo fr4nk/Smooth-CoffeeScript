@@ -153,13 +153,13 @@ prelude.stopServer = ->
 # Interactive utilities
 #-----------------------
 
-# Display a data object to a given depth and optionally in colors 
+# Display a data object to a given depth and optionally in colors
 util = require 'util'
 prelude.show = (obj, depth = 2, showHidden = false, colors = useColors) ->
   switch typeof obj
     when 'string' then util.print obj, '\n'
-    when 'function' then util.puts obj.toString()
-    else util.puts util.inspect obj, showHidden, depth, colors
+    when 'function' then console.log obj.toString()
+    else console.log util.inspect obj, showHidden, depth, colors
   return obj
 
 # Ask a yes/no question - does not mix with the REPL
